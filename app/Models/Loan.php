@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Loan;
+use App\Models\User;
+use App\Models\ScheduledRepayment;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Loan extends Model
 {
@@ -58,4 +61,20 @@ class Loan extends Model
     {
         return $this->hasMany(ScheduledRepayment::class, 'loan_id');
     }
+
+
+    public function createLoan(User $user, int $amount, string $currencyCode, int $terms, string $processedAt)
+    {
+        DB::table('loans')->insert([
+            'id' => $loan->id,
+            'user_id' => $this->user->id,
+            'amount' => $amount,
+            'terms' => $terms,
+            'outstanding_amount' => $amount,
+            'currency_code' => $currencyCode,
+            'processed_at' => '2020-01-20',
+            'status' => Loan::STATUS_DUE,
+        ]);
+    }
+
 }

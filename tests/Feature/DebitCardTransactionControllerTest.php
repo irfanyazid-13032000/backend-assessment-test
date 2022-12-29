@@ -28,31 +28,60 @@ class DebitCardTransactionControllerTest extends TestCase
     public function testCustomerCanSeeAListOfDebitCardTransactions()
     {
         // get /debit-card-transactions
+        $response = $this->get("/debit-card-transactions");
+        $response->assertStatus(200);
+        $response->assertJSON([
+            'data' => [
+                'id','debit_card_id','amount','currency_code'
+            ]
+            ]);
     }
 
     public function testCustomerCannotSeeAListOfDebitCardTransactionsOfOtherCustomerDebitCard()
     {
-        // get /debit-card-transactions
+        $response = $this->get("/debit-card-transactions");
+        $response->assertStatus(403);
+        $response->assertJSON([
+            'data' => 'you are not allowed']);
     }
 
     public function testCustomerCanCreateADebitCardTransaction()
     {
-        // post /debit-card-transactions
+        $response = $this->post("/debit-card-transactions");
+        $response->assertStatus(200);
+        $response->assertJSON([
+            'data' => 'transaction created succesfully!'
+        ]);
     }
 
     public function testCustomerCannotCreateADebitCardTransactionToOtherCustomerDebitCard()
     {
-        // post /debit-card-transactions
+        $response = $this->post("/debit-card-transactions");
+        $response->assertStatus(403);
+        $response->assertJSON([
+            'data' => 'You are not allowed!'
+        ]);
     }
 
-    public function testCustomerCanSeeADebitCardTransaction()
+    public function testCustomerCanSeeADebitCardTransaction(Request $request)
     {
-        // get /debit-card-transactions/{debitCardTransaction}
+        $response = $this->get("/debit-cards-transactions/{$request->id}");
+        $response->assertStatus(200);
+        $response->assertJSON([
+            'data' => [
+                'id','debit_card_id','amount','currency_code'
+            ]
+            ]);    
+        
     }
 
-    public function testCustomerCannotSeeADebitCardTransactionAttachedToOtherCustomerDebitCard()
+    public function testCustomerCannotSeeADebitCardTransactionAttachedToOtherCustomerDebitCard(Request $request)
     {
-        // get /debit-card-transactions/{debitCardTransaction}
+        $response = $this->get("/debit-cards-transactions/{$request->id}");
+        $response->assertStatus(403);
+        $response->assertJSON([
+            'data' => 'you are not allowed!']);    
+
     }
 
     // Extra bonus for extra tests :)

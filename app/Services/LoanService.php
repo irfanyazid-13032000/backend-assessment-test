@@ -19,9 +19,16 @@ class LoanService
      *
      * @return Loan
      */
+
+     public function __construct(Loan $loan,ReceivedRepayment $receiveRepayment)
+     {
+        $this->loan = $loan;
+        $this->receiveRepayment = $receiveRepayment;
+     }
+
     public function createLoan(User $user, int $amount, string $currencyCode, int $terms, string $processedAt): Loan
     {
-        //
+        return $this->user->createLoan($data);
     }
 
     /**
@@ -36,6 +43,6 @@ class LoanService
      */
     public function repayLoan(Loan $loan, int $amount, string $currencyCode, string $receivedAt): ReceivedRepayment
     {
-        //
+        return $this->receiveRepayment->createReceivedRepayment($data);
     }
 }

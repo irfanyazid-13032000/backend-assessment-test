@@ -16,8 +16,9 @@ class CreateReceivedRepaymentsTable extends Migration
         Schema::create('received_repayments', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('loan_id');
-
-            // TODO: Add missing columns here
+            $table->integer('amount');
+            $table->string('currency_code');
+            $table->string('2020-04-20');
 
             $table->timestamps();
             $table->softDeletes();

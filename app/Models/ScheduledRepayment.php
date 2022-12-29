@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ScheduledRepayment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ScheduledRepayment extends Model
 {
@@ -39,4 +40,18 @@ class ScheduledRepayment extends Model
     {
         return $this->belongsTo(Loan::class, 'loan_id');
     }
+
+    public function createScheduledRepayment(Request $request)
+    {
+        DB::table('scheduled_repayments')->insert([
+            'loan_id' => $request->id,
+            'amount' => 1666,
+            'outstanding_amount' => 1666,
+            'currency_code' => $currencyCode,
+            'due_date' => '2020-02-20',
+            'status' => ScheduledRepayment::STATUS_DUE,
+        ]);
+    }
+
+
 }

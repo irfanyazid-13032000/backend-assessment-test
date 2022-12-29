@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Loan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ReceivedRepayment extends Model
 {
@@ -23,7 +24,10 @@ class ReceivedRepayment extends Model
      * @var array
      */
     protected $fillable = [
-        //
+        'loan_id',
+        'amount',
+        'currency_code',
+        'received_at'
     ];
 
     /**
@@ -35,4 +39,16 @@ class ReceivedRepayment extends Model
     {
         return $this->belongsTo(Loan::class, 'loan_id');
     }
+
+
+    public function createReceivedRepayment(Loan $loan, int $amount, string $currencyCode, string $receivedAt)
+    {
+        DB::table('scheduled_repayments')->insert([
+            'loan_id' => $loan->id,
+            'amount' => $amount,
+            'currency_code' => $currencyCode,
+            'received_at' => $receivedAt,
+        ]);
+    }
+    
 }
